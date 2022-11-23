@@ -8,16 +8,16 @@ import User from "../models/User";
 class AuthController {
   async authenticate(req: Request, res: Response) {
     const repository = getRepository(User);
-    const { email, password } = req.body;
+    const { userName, password } = req.body;
 
-    if (!email) {
-      return res.status(401).send("O campo email e obrigatorio");
+    if (!userName) {
+      return res.status(401).send("O campo userName e obrigatorio");
     }
     if (!password) {
       return res.status(401).send("O campo senha e obrigatorio");
     }
 
-    const userExists = await repository.findOne({ where: { email } });
+    const userExists = await repository.findOne({ where: { userName } });
     if (!userExists) {
       return res.status(401).send("Usuario ou senha invalido");
     }
@@ -36,8 +36,7 @@ class AuthController {
 
     return res.json({
       id: userExists.id,
-      email: userExists.email,
-      adm: userExists.adm,
+      userName: userExists.userName,
       jwt: token,
     });
   }

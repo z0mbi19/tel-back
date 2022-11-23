@@ -20,13 +20,13 @@ class UserController {
   }
   async store(req: Request, res: Response) {
     const repository = getRepository(User);
-    const { email, password, adm } = req.body;
-    const userExists = await repository.findOne({ where: { email } });
+    const { userName, password, name } = req.body;
+    const userExists = await repository.findOne({ where: { userName } });
     if (userExists) {
-      return res.status(409).send("Esse email já foi cadastrado");
+      return res.status(409).send("Esse userName já foi cadastrado");
     }
     const cryptPass = bcrypt.hashSync(password, 8);
-    const user = repository.create({ email, password: cryptPass, adm });
+    const user = repository.create({ userName, password: cryptPass, name });
     try {
       await repository.save(user);
       return res.json("ok");
@@ -36,23 +36,27 @@ class UserController {
   }
   async update(req: Request, res: Response) {
     const repository = getRepository(User);
-    const { email, password } = req.body;
-    if (!email || !password) {
-      return res.status(401).send("Campo senha e email são obrigatorios");
+    const { userName, password, name } = req.body;
+    if (!userName || !password) {
+      return res.status(401).send("Campo senha e usersão obrigatorios");
     }
     const user = await repository.findOne({ where: { id: req.userId } });
     if (!user) {
       return res.status(401).send("Usuario invalido");
     }
 
-    const userExists = await repository.findOne({ where: { email } });
+    const userExists = await repository.findOne({ where: { userName } });
     if (userExists) {
-      return res.status(409).send("Esse email já foi cadastrado");
+      return res.status(409).send("Esse user já foi cadastrado");
     }
 
     const cryptPass = bcrypt.hashSync(password, 8);
 
-    await repository.update(req.userId, { email, password: cryptPass });
+    await repository.update(req.userId, {
+      userName,
+      password: cryptPass,
+      name,
+    });
 
     return res.json("ok");
   }

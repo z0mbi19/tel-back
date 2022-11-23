@@ -6,7 +6,7 @@
   <!-- <a href="https://telback.netlify.app">Demo</a> -->
 </div>
 
-<h1 align="center">Tel Back</h1>
+<h1 align="center">Test Back</h1>
 
 <p align="center">
   <img alt="Github top language" src="https://img.shields.io/github/languages/top/z0mbi19/tel-back?color=56BEB8">
